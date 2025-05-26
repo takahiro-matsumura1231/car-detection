@@ -17,3 +17,9 @@ send_camera_plate2.py : raspi上で動作未確認．新実装．
 vector_recorder.py : ナンバープレート画像の特徴ベクトルを保存する．サーバに余計な画像を送らないようにするために使用．
 
 yolodetect.py : 画像内からナンバープレート検出する．yolov11nをファインチューニング．weights/last.onnxが重み．
+
+
+
+現在の問題点、AzereのOCRが今のところ不十分。暗い、質が悪い画像を読み取ると精度が悪くなってします。
+他の方法を探す。
+Mistral OCRが出てくる。これは既存のOCR、MMLLMより精度が高いらしい
