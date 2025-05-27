@@ -19,6 +19,7 @@ vector_recorder.py : ナンバープレート画像の特徴ベクトルを保�
 
 yolodetect.py : 画像内からナンバープレート検出する．yolov11nをファインチューニング．weights/last.onnxが重み．
 
+元データ↓
 
 ![image copy 3](https://github.com/user-attachments/assets/02e28b59-2689-47d6-9cf0-c4396440b2ca)
 
@@ -28,6 +29,8 @@ yolodetect.py : 画像内からナンバープレート検出する．yolov11n�
 
 ![image copy](https://github.com/user-attachments/assets/a2883a5e-edda-412c-a2c0-ff945e342cff)
 
+
+検出後データ↓
 
 ![cropped_image3](https://github.com/user-attachments/assets/73a05695-8de9-423a-b644-dd407b7cf747)
 
