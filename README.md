@@ -1,23 +1,84 @@
-﻿# car-detection
-car_detection_raspi
-ラズパイ上で，車のナンバープレートを検出し，サーバに画像を送るプログラムたち
+# 🚗 Car Detection on Raspberry Pi
+
+このプロジェクトは，**Raspberry Pi上で車のナンバープレートを検出し，必要に応じて画像をサーバへ送信する**一連のシステムです．YOLOベースの物体検出と，特徴ベクトルを用いたフィルタリング処理，さらにOCRによる文字抽出を組み合わせた構成となっています．
+
+---
+
+## 📚 目次
+
+- [📁 ディレクトリ構成](#-ディレクトリ構成)
+- [🔧 各スクリプトの説明](#-各スクリプトの説明)
+- [🧠 使用技術とモデル](#-使用技術とモデル)
+- [⚠️ 現在の課題](#️-現在の課題)
+- [📄 ライセンス](#-ライセンス)
+
+---
+
+## 📁 ディレクトリ構成
+
+```
+car-detection/
+├── car_detection_raspi/
+│   ├── camera_thread.py
+│   ├── directus_sender.py
+│   ├── movilenetv4vector.py
+│   ├── ocr_sender.py
+│   ├── send_camera_plate.py
+│   ├── send_camera_plate2.py
+│   ├── vector_recorder.py
+│   └── yolodetect.py
+├── weights/
+│   ├── latest_k_0.onnx
+│   └── last.onnx
+├── image copy*/              # 元画像
+├── cropped_image*/           # 検出後の切り出し画像
+└── README.md
+```
+
+---
+
+## 🔧 各スクリプトの説明
+
+| スクリプト名 | 説明 |
+|--------------|------|
+| `camera_thread.py` | カメラ映像をスレッドで継続取得するモジュール |
+| `directus_sender.py` | Directusとの通信機能（未実装） |
+| `movilenetv4vector.py` | ナンバープレート画像の特徴ベクトル抽出（類似画像除去） |
+| `ocr_sender.py` | Azure OCR APIと通信し文字を読み取る |
+| `send_camera_plate.py` | 旧バージョンの実装（Raspberry Pi上で動作確認済み） |
+| `send_camera_plate2.py` | 新バージョン（未確認） |
+| `vector_recorder.py` | ベクトル抽出と記録（`movilenetv4vector.py`と連携） |
+| `yolodetect.py` | YOLOv11nベースでナンバープレート検出（`last.onnx`使用） |
+
+---
+
+## 🧠 使用技術とモデル
+
+- **YOLOv11n** をファインチューニングしてナンバープレート検出
+- 特徴抽出に **MobileNetV4** を使用し，重複画像の送信を抑制
+- OCRは **Azure OCR API** を利用（今後Mistral OCR等への切替も検討中）
+
+---
+
+## ⚠️ 現在の課題
+
+- Azure OCRが暗所や低品質画像に弱く，文字認識精度が不十分
+- 高精度な代替OCRとして **Mistral OCR** などの導入を検討
+
+---
+
+## 📄 ライセンス
+
+MITライセンス
+
+---
+
+ 
+ 
+ # car-detection
+
 ![annotated_image](https://github.com/user-attachments/assets/01aeb924-6061-4b5f-a1e4-e223a44e9e71)
 
-camera_thread.py : カメラから画像を取得し続ける．別スレッドで動作する．
-
-directus_sender.py : directusと通信する．未実装．
-
-movilenetv4vector.py : ナンバープレート画像の特徴ベクトルを保存する．サーバに余計な画像を送らないようにするために使用．weights/latest_k_0.onnxが重み．
-
-ocr_sender.py : ocrを行うサーバと通信する．今のところazureと通信する．
-
-send_camera_plate.py : raspi上で動作確認済み．旧実装．
-
-send_camera_plate2.py : raspi上で動作未確認．新実装．
-
-vector_recorder.py : ナンバープレート画像の特徴ベクトルを保存する．サーバに余計な画像を送らないようにするために使用．
-
-yolodetect.py : 画像内からナンバープレート検出する．yolov11nをファインチューニング．weights/last.onnxが重み．
 
 元データ↓
 
@@ -39,10 +100,6 @@ yolodetect.py : 画像内からナンバープレート検出する．yolov11n�
 
 
 ![cropped_image1](https://github.com/user-attachments/assets/a7c03e3e-9fb0-4007-80d9-30febc8c0ea5)
-
-
-現在の問題点、AzereのOCRが今のところ不十分。暗い、質が悪い画像を読み取ると精度が悪くなってします。 他の方法を探す。 Mistral OCRが出てくる。これは既存のOCR、MMLLMより精度が高いらしい
-
 
 ![image](https://github.com/user-attachments/assets/49e91c81-14f9-4a7e-b9e9-8cfc8f3bee71)
 
